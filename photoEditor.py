@@ -1,18 +1,27 @@
 from PIL import Image, ImageEnhance, ImageFilter
 import os
+from sys import argv
 
-path = './imgs'
-pathOut = '/editedImgs'
+base_path = argv[1]
+path = '\imgs'
+pathOut = '\editedImgs'
+fullpath = base_path + path
+print(fullpath)
 
-for filename in os.listdir(path):
-    img = Image.open(f"{path}/{filename}")
+try:
+    for filename in os.listdir(fullpath):
+        img = Image.open(f"{base_path + path}\{filename}")
     
-    edit = img.filter(ImageFilter.SHARPEN).convert('L').rotate(-90)
+        edit = img.filter(ImageFilter.SHARPEN).convert('L').rotate(-90)
     
-    factor = 1.5
-    enhancer = ImageEnhancer.Contrast(edit)
-    edit = enhancer.enhance(factor)
+        factor = 1.5
+        enhancer = ImageEnhancer.Contrast(edit)
+        edit = enhancer.enhance(factor)
     
-    clean_name = os.path.splitext(filename)[0]
+        clean_name = os.path.splitext(filename)[0]
     
-    edit.save(f".{pathOut}/{clean_name}_edited.jpg")
+        edit.save(f"{base_path + pathOut}\{clean_name}_edited.jpg")
+except:
+    print("File not found, Check whether there is an image in that directory")
+    
+    
